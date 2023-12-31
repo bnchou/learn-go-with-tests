@@ -1,7 +1,5 @@
 package helloworld
 
-import "fmt"
-
 // Domain code
 func Hello(name, language string) string {
 	const englishHelloPrefix = "Hello, "
@@ -16,8 +14,4 @@ func Hello(name, language string) string {
 	}
 
 	return englishHelloPrefix + name
-}
-
-func main() {
-	fmt.Println(Hello("Chris", ""))
 }
