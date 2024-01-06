@@ -32,3 +32,7 @@ func (d Dictionary) Search(s string) (string, error) {
 	}
 	return res, nil
 }
+
+func (d Dictionary) Update(word, definition string) {
+	d[word] = definition
+}
