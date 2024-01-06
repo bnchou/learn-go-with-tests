@@ -3,12 +3,25 @@ package maps
 import "testing"
 
 func TestSearch(t *testing.T) {
-	Dictionary := Dictionary{"test": "this is just a test"}
+	dictionary := Dictionary{"test": "this is just a test"}
 
-	got := Dictionary.Search("test")
-	want := "this is just a test"
+	t.Run("known word", func(t *testing.T) {
+		got, _ := dictionary.Search("test")
+		want := "this is just a test"
 
-	assertString(got, want, t)
+		assertString(got, want, t)
+	})
+
+	t.Run("unknown word", func(t *testing.T) {
+		_, err := dictionary.Search("unknown")
+		want := "could not find the word you were looking for"
+
+		if err == nil {
+			t.Fatal("expected to get an error.")
+		}
+
+		assertString(err.Error(), want, t)
+	})
 }
 
 func assertString(got string, want string, t *testing.T) {

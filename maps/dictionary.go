@@ -1,7 +1,15 @@
 package maps
 
+import (
+	"errors"
+)
+
 type Dictionary map[string]string
 
-func (d Dictionary) Search(s string) string {
-	return d[s]
+func (d Dictionary) Search(s string) (string, error) {
+	res := d[s]
+	if res == "" {
+		return "", errors.New("could not find the word you were looking for")
+	}
+	return d[s], nil
 }
