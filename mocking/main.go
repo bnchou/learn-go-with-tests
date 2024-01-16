@@ -31,11 +31,3 @@ type DefaultSleeper struct{}
 func (d *DefaultSleeper) Sleep() {
 	time.Sleep(1 * time.Second)
 }
-
-type MockSleep struct {
-	call int
-}
-
-func (m *MockSleep) Sleep() {
-	m.call++
-}
