@@ -5,13 +5,17 @@ import (
 )
 
 func walk(x any, f func(input string)) {
-	v := reflect.VisibleFields(reflect.TypeOf(x))
-	for _, vf := range v {
-		switch vf.Type.Kind() {
+	val := reflect.ValueOf(x)
+	if val.Kind() == reflect.Pointer {
+		val = val.Elem()
+	}
+	for i := 0; i < val.NumField(); i++ {
+		field := val.Field(i)
+		switch field.Kind() {
 		case reflect.String:
-			f(reflect.ValueOf(x).FieldByName(vf.Name).String())
+			f(field.String())
 		case reflect.Struct:
-			walk(reflect.ValueOf(x).FieldByName(vf.Name).Interface(), f)
+			walk(field.Interface(), f)
 		}
 	}
 }
