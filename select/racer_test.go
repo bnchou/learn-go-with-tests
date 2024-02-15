@@ -26,7 +26,7 @@ func TestConfigurableRacer(t *testing.T) {
 		}
 	})
 
-	t.Run("returns an error if a server doesn't respond within 10s", func(t *testing.T) {
+	t.Run("returns an error if a server doesn't respond within 1s", func(t *testing.T) {
 		serverA := makeDelayedServer(2 * time.Second)
 		serverB := makeDelayedServer(3 * time.Second)
 
