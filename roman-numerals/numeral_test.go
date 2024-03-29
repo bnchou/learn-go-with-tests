@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestRomanNumerals(t *testing.T) {
 	cases := []struct {
@@ -23,12 +26,12 @@ func TestRomanNumerals(t *testing.T) {
 	}
 }
 
-func ConvertToRoman(i int) string {
-	if i == 3 {
-		return "III"
+func ConvertToRoman(arabic int) string {
+	var result strings.Builder
+
+	for i := 0; i < arabic; i++ {
+		result.WriteString("I")
 	}
-	if i == 2 {
-		return "II"
-	}
-	return "I"
+
+	return result.String()
 }
