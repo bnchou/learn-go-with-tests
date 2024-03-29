@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+	"testing/quick"
 )
 
 type RomanNumeral struct {
-	Value  int
+	Value  uint16
 	Symbol string
 }
 
@@ -30,7 +31,7 @@ var allRomanNumerals = []RomanNumeral{
 func TestRomanNumerals(t *testing.T) {
 	cases := []struct {
 		Description string
-		Arabic      int
+		Arabic      uint16
 		Roman       string
 	}{
 		{"1 gets converted to I", 1, "I"},
@@ -59,7 +60,7 @@ func TestRomanNumerals(t *testing.T) {
 	}
 }
 
-func ConvertToRoman(arabic int) string {
+func ConvertToRoman(arabic uint16) string {
 	var result strings.Builder
 	for _, v := range allRomanNumerals {
 		for arabic >= v.Value {
@@ -71,8 +72,8 @@ func ConvertToRoman(arabic int) string {
 	return result.String()
 }
 
-func ConvertToArabic(roman string) int {
-	var arabic = 0
+func ConvertToArabic(roman string) uint16 {
+	var arabic uint16 = 0
 
 	for _, numeral := range allRomanNumerals {
 		for strings.HasPrefix(roman, numeral.Symbol) {
@@ -87,7 +88,7 @@ func ConvertToArabic(roman string) int {
 func TestConvertingToArabic(t *testing.T) {
 	cases := []struct {
 		Description string
-		Arabic      int
+		Arabic      uint16
 		Roman       string
 	}{
 		{"1 gets converted to I", 1, "I"},
@@ -106,12 +107,27 @@ func TestConvertingToArabic(t *testing.T) {
 		{Arabic: 1984, Roman: "MCMLXXXIV"},
 	}
 
-	for _, test := range cases[:10] {
+	for _, test := range cases {
 		t.Run(fmt.Sprintf("%q gets converted to %d", test.Roman, test.Arabic), func(t *testing.T) {
 			got := ConvertToArabic(test.Roman)
 			if got != test.Arabic {
 				t.Errorf("got %d, want %d", got, test.Arabic)
 			}
 		})
+	}
+}
+
+func TestPropertiesOfConversion(t *testing.T) {
+	assertion := func(arabic uint16) bool {
+		if arabic > 3999 {
+			return true
+		}
+		roman := ConvertToRoman(arabic)
+		fromRoman := ConvertToArabic(roman)
+		return fromRoman == arabic
+	}
+
+	if err := quick.Check(assertion, nil); err != nil {
+		t.Error("failed checks", err)
 	}
 }
