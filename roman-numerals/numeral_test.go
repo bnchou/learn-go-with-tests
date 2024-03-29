@@ -11,6 +11,12 @@ type RomanNumeral struct {
 }
 
 var allRomansNumerals = []RomanNumeral{
+	{1000, "M"},
+	{900, "CM"},
+	{500, "D"},
+	{400, "CD"},
+	{100, "C"},
+	{90, "XC"},
 	{50, "L"},
 	{40, "XL"},
 	{10, "X"},
@@ -39,6 +45,7 @@ func TestRomanNumerals(t *testing.T) {
 		{"47 gets converted to XLVII", 47, "XLVII"},
 		{"49 gets converted to XLIX", 49, "XLIX"},
 		{"50 gets converted to L", 50, "L"},
+		{Arabic: 1984, Roman: "MCMLXXXIV"},
 	}
 
 	for _, test := range cases {
@@ -53,12 +60,10 @@ func TestRomanNumerals(t *testing.T) {
 
 func ConvertToRoman(arabic int) string {
 	var result strings.Builder
-	for arabic > 0 {
-		for _, v := range allRomansNumerals {
-			if arabic >= v.Value {
-				result.WriteString(v.Symbol)
-				arabic -= v.Value
-			}
+	for _, v := range allRomansNumerals {
+		for arabic >= v.Value {
+			result.WriteString(v.Symbol)
+			arabic -= v.Value
 		}
 	}
 
