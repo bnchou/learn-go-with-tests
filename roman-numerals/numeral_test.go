@@ -16,6 +16,8 @@ func TestRomanNumerals(t *testing.T) {
 		{"3 gets converted to III", 3, "III"},
 		{"4 gets converted to IV (can't repeat more than 3 times)", 4, "IV"},
 		{"5 gets converted to V", 5, "V"},
+		{"6 gets converted to VI", 6, "VI"},
+		{"9 gets converted to IX", 9, "IX"},
 	}
 
 	for _, test := range cases {
@@ -30,16 +32,21 @@ func TestRomanNumerals(t *testing.T) {
 
 func ConvertToRoman(arabic int) string {
 	var result strings.Builder
-	for i := arabic; i > 0; i-- {
-		if i == 5 {
+	for arabic > 0 {
+		switch {
+		case arabic > 8:
+			result.WriteString("IX")
+			arabic -= 9
+		case arabic > 4:
 			result.WriteString("V")
-			break
-		}
-		if i == 4 {
+			arabic -= 5
+		case arabic > 3:
 			result.WriteString("IV")
-			break
+			arabic -= 4
+		default:
+			result.WriteString("I")
+			arabic--
 		}
-		result.WriteString("I")
 	}
 
 	return result.String()
