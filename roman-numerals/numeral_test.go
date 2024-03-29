@@ -5,6 +5,19 @@ import (
 	"testing"
 )
 
+type RomanNumeral struct {
+	Value  int
+	Symbol string
+}
+
+var allRomansNumerals = []RomanNumeral{
+	{10, "X"},
+	{9, "IX"},
+	{5, "V"},
+	{4, "IV"},
+	{1, "I"},
+}
+
 func TestRomanNumerals(t *testing.T) {
 	cases := []struct {
 		Description string
@@ -18,6 +31,8 @@ func TestRomanNumerals(t *testing.T) {
 		{"5 gets converted to V", 5, "V"},
 		{"6 gets converted to VI", 6, "VI"},
 		{"9 gets converted to IX", 9, "IX"},
+		{"10 gets converted to X", 10, "X"},
+		{"14 gets converted to XIV", 14, "XIV"},
 	}
 
 	for _, test := range cases {
@@ -33,19 +48,11 @@ func TestRomanNumerals(t *testing.T) {
 func ConvertToRoman(arabic int) string {
 	var result strings.Builder
 	for arabic > 0 {
-		switch {
-		case arabic > 8:
-			result.WriteString("IX")
-			arabic -= 9
-		case arabic > 4:
-			result.WriteString("V")
-			arabic -= 5
-		case arabic > 3:
-			result.WriteString("IV")
-			arabic -= 4
-		default:
-			result.WriteString("I")
-			arabic--
+		for _, v := range allRomansNumerals {
+			if arabic >= v.Value {
+				result.WriteString(v.Symbol)
+				arabic -= v.Value
+			}
 		}
 	}
 
