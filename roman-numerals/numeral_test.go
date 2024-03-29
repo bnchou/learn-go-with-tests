@@ -131,3 +131,62 @@ func TestPropertiesOfConversion(t *testing.T) {
 		t.Error("failed checks", err)
 	}
 }
+
+func TestPropertiesOfMaxThreeSymbols(t *testing.T) {
+	assertion := func(arabic uint16) bool {
+		if arabic > 3999 {
+			return true
+		}
+		roman := ConvertToRoman(arabic)
+		consecutivesChars := MaxConsecutiveChars(roman)
+		return consecutivesChars <= 3
+	}
+
+	if err := quick.Check(assertion, nil); err != nil {
+		t.Error("failed checks", err)
+	}
+}
+
+func MaxConsecutiveChars(s string) int {
+	maxCount := 0
+	currentCount := 0
+	var currentChar rune
+
+	for _, char := range s {
+		if char == currentChar {
+			currentCount++
+		} else {
+			currentChar = char
+			currentCount = 1
+		}
+
+		if currentCount > maxCount {
+			maxCount = currentCount
+		}
+	}
+
+	return maxCount
+}
+
+func TestMaxConsecutiveChars(t *testing.T) {
+	cases := []struct {
+		input string
+		want  int
+	}{
+		{"FFFFIII", 4},
+		{"IIII", 4},
+		{"I", 1},
+		{"", 0},
+		{"FIIIF", 3},
+		{"F", 1},
+	}
+
+	for _, test := range cases {
+		t.Run(fmt.Sprintf("%q has max consecutive chars of %d", test.input, test.want), func(t *testing.T) {
+			got := MaxConsecutiveChars(test.input)
+			if got != test.want {
+				t.Errorf("got %d, want %d", got, test.want)
+			}
+		})
+	}
+}
