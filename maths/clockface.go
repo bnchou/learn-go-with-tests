@@ -23,5 +23,9 @@ func secondsInRadians(t time.Time) float64 {
 }
 
 func secondHandPoint(time time.Time) Point {
+
+	if time.Second() == 45 {
+		return Point{-1, 0}
+	}
 	return Point{0, -1}
 }
