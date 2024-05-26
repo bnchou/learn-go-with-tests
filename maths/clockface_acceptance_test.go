@@ -66,11 +66,17 @@ func TestSVGWriterAtMidnight(t *testing.T) {
 
 	want := Line{150, 150, 150, 60}
 
-	for _, line := range svg.Line {
-		if line == want {
-			return
+	if !containsLine(want, svg.Line) {
+		t.Errorf("Expected to find the second hand line %+v, in the SVG lines %+v", want, svg.Line)
+	}
+}
+
+func containsLine(line Line, lines []Line) bool {
+	for _, l := range lines {
+		if l == line {
+			return true
 		}
 	}
 
-	t.Errorf("Expected to find the second hand line %+v, in the SVG lines %+v", want, svg.Line)
+	return false
 }
