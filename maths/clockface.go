@@ -27,9 +27,20 @@ func SecondHand(t time.Time) Point {
 	return p
 }
 
+func angleToPoint(angle float64) Point {
+	x := math.Sin(angle)
+	y := math.Cos(angle)
+
+	return Point{x, y}
+}
+
 func minutesInRadians(t time.Time) float64 {
 	return (secondsInRadians(t) / 60) +
 		(math.Pi / (30 / float64(t.Minute())))
+}
+
+func minuteHandPoint(time time.Time) Point {
+	return angleToPoint(minutesInRadians(time))
 }
 
 func secondsInRadians(t time.Time) float64 {
@@ -37,8 +48,7 @@ func secondsInRadians(t time.Time) float64 {
 }
 
 func secondHandPoint(time time.Time) Point {
-	r := secondsInRadians(time)
-	return Point{math.Sin(r), math.Cos(r)}
+	return angleToPoint(secondsInRadians(time))
 }
 
 func SVGWriter(w io.Writer, t time.Time) {
