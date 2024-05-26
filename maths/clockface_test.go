@@ -12,6 +12,7 @@ func TestMinutesInRadians(t *testing.T) {
 		angle float64
 	}{
 		{simpleTime(0, 30, 0), math.Pi},
+		{simpleTime(0, 0, 7), 7 * (math.Pi / (30 * 60))},
 	}
 
 	for _, c := range cases {
@@ -22,10 +23,6 @@ func TestMinutesInRadians(t *testing.T) {
 			}
 		})
 	}
-}
-
-func minutesInRadians(time time.Time) float64 {
-	return math.Pi
 }
 
 func TestSecondsInRadians(t *testing.T) {
