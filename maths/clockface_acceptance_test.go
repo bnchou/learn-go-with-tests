@@ -77,7 +77,7 @@ func TestSVGWriterMinuteHand(t *testing.T) {
 		line Line
 	}{
 		{
-			simpleTime(0, 30, 0),
+			simpleTime(0, 0, 0),
 			Line{150, 150, 150, 70},
 		},
 	}
